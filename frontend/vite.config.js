@@ -6,6 +6,9 @@ export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd(), "");
   return {
     plugins: [react()],
-    server: { proxy: { "/api": env.VITE_BACKEND_URL || "http://localhost:5001" } },
+    server: {
+      allowedHosts: true,
+      proxy: { "/api": env.VITE_BACKEND_URL || "http://localhost:5001" },
+    },
   };
 });

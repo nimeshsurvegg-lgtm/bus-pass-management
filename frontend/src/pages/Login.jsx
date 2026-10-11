@@ -37,36 +37,41 @@ export default function Login({ onLogin }) {
   }
 
   return (
-    <section className="card narrow">
-      <h1>Ride more, queue less.</h1>
-      <p className="muted">Log in with your phone number. We send you a one-time code.</p>
+    <>
+      <section className="hero">
+        <h1>Ride more, queue less.</h1>
+        <p>Weekly and monthly bus passes on your phone. No paper, no counter.</p>
+        <div className="route"><i /><b /><i /><b /><i /></div>
+      </section>
 
-      {step === "phone" ? (
-        <form onSubmit={sendOtp}>
-          <label>
-            Phone number
-            <input value={phone} onChange={(e) => setPhone(e.target.value)} placeholder="9876543210" inputMode="tel" required />
-          </label>
-          <label>
-            Name <span className="muted">(only needed the first time)</span>
-            <input value={name} onChange={(e) => setName(e.target.value)} placeholder="Asha Rao" />
-          </label>
-          {error && <p className="error">{error}</p>}
-          <button className="primary" disabled={loading}>{loading ? "Sending..." : "Send code"}</button>
-        </form>
-      ) : (
-        <form onSubmit={verifyOtp}>
-          <label>
-            Code sent to {phone}
-            <input value={code} onChange={(e) => setCode(e.target.value)} placeholder="123456" inputMode="numeric" maxLength={8} autoFocus required />
-          </label>
-          {error && <p className="error">{error}</p>}
-          <button className="primary" disabled={loading}>{loading ? "Checking..." : "Log in"}</button>
-          <button type="button" className="link" onClick={() => { setStep("phone"); setCode(""); setError(""); }}>
-            Use a different number
-          </button>
-        </form>
-      )}
-    </section>
+      <section className="card narrow">
+        {step === "phone" ? (
+          <form onSubmit={sendOtp} style={{ marginTop: 0 }}>
+            <label>
+              Phone number
+              <input value={phone} onChange={(e) => setPhone(e.target.value)} placeholder="9876543210" inputMode="tel" required />
+            </label>
+            <label>
+              Name <span className="muted">(first time only)</span>
+              <input value={name} onChange={(e) => setName(e.target.value)} placeholder="Asha Rao" />
+            </label>
+            {error && <p className="error">{error}</p>}
+            <button className="primary" disabled={loading}>{loading ? "Sending..." : "Send code"}</button>
+          </form>
+        ) : (
+          <form onSubmit={verifyOtp} style={{ marginTop: 0 }}>
+            <label>
+              Enter the code sent to {phone}
+              <input className="otp" value={code} onChange={(e) => setCode(e.target.value)} placeholder="······" inputMode="numeric" maxLength={8} autoFocus required />
+            </label>
+            {error && <p className="error">{error}</p>}
+            <button className="primary" disabled={loading}>{loading ? "Checking..." : "Log in"}</button>
+            <button type="button" className="link" onClick={() => { setStep("phone"); setCode(""); setError(""); }}>
+              Use a different number
+            </button>
+          </form>
+        )}
+      </section>
+    </>
   );
 }

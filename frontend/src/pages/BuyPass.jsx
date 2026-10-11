@@ -8,8 +8,8 @@ const ROUTES = [
   "Harbour to Market Square",
 ];
 const PLANS = [
-  { id: "weekly", label: "Weekly", detail: "7 days", price: 250 },
-  { id: "monthly", label: "Monthly", detail: "30 days", price: 800 },
+  { id: "weekly", label: "Weekly", detail: "Valid 7 days", price: 250 },
+  { id: "monthly", label: "Monthly", detail: "Valid 30 days", price: 800 },
 ];
 
 export default function BuyPass({ onUnauth, onDone }) {
@@ -17,6 +17,8 @@ export default function BuyPass({ onUnauth, onDone }) {
   const [plan, setPlan] = useState("weekly");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+
+  const chosen = PLANS.find((p) => p.id === plan);
 
   async function submit(e) {
     e.preventDefault();
@@ -35,6 +37,7 @@ export default function BuyPass({ onUnauth, onDone }) {
   return (
     <section className="card narrow">
       <h1>Get a pass</h1>
+      <p className="muted">Pick your route and how long you need it.</p>
       <form onSubmit={submit}>
         <label>
           Route
@@ -48,14 +51,19 @@ export default function BuyPass({ onUnauth, onDone }) {
             <label key={p.id} className={plan === p.id ? "plan on" : "plan"}>
               <input type="radio" name="plan" checked={plan === p.id} onChange={() => setPlan(p.id)} />
               <strong>{p.label}</strong>
-              <span>{p.detail}</span>
+              <span className="muted">{p.detail}</span>
               <span className="price">₹{p.price}</span>
             </label>
           ))}
         </div>
 
+        <div className="summary">
+          <span className="muted">Total</span>
+          <span className="big">₹{chosen.price}</span>
+        </div>
+
         {error && <p className="error">{error}</p>}
-        <button className="primary" disabled={loading}>{loading ? "Buying..." : "Buy pass"}</button>
+        <button className="primary" disabled={loading}>{loading ? "Buying..." : `Buy ${chosen.label.toLowerCase()} pass`}</button>
       </form>
     </section>
   );
